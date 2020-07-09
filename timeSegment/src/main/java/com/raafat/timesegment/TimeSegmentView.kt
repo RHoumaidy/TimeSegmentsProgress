@@ -154,6 +154,11 @@ class TimeSegmentView @JvmOverloads constructor(
         addItem(TimeItem(start, end, color))
     }
 
+    fun clear(){
+        times.clear()
+        invalidate()
+    }
+
     fun addItem(
         start: String,
         end: String,

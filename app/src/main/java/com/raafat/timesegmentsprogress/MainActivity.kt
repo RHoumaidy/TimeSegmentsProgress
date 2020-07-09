@@ -3,6 +3,7 @@ package com.raafat.timesegmentsprogress
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import com.raafat.timesegment.TimeItem
 import com.raafat.timesegment.TimeSegmentView
 import java.text.SimpleDateFormat
@@ -15,11 +16,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val timeSegmentView = findViewById<TimeSegmentView>(R.id.timeSegments)
         sdf.timeZone = TimeZone.getTimeZone("GMT")
+
         timeSegmentView.times = arrayListOf(
             TimeItem(
                 sdf.parse("02:0 AM")?.time ?: 0,
                 sdf.parse("05:05 AM")?.time ?: 0,
-                Color.RED
+                ContextCompat.getColor(this,R.color.colorPrimary)
             ),
             TimeItem(
                 sdf.parse("01:33 PM")?.time ?: 0,
