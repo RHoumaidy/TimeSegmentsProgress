@@ -56,14 +56,7 @@ class TimeSegmentView @JvmOverloads constructor(
             field = min(value, cornersRadius)
             invalidate()
         }
-    private var strokeWidth = 1.0f
-        set(value) {
-            field = value
-            backgroundPaint.apply {
-                strokeWidth = this@TimeSegmentView.strokeWidth
-            }
-            invalidate()
-        }
+
     private var textSize = 12f
         set(value) {
             field = value
@@ -76,6 +69,14 @@ class TimeSegmentView @JvmOverloads constructor(
             field = value
             backgroundPaint.apply {
                 color = background_color
+            }
+            invalidate()
+        }
+    private var textColor: Int = 0
+        set(value) {
+            field = value
+            textPaint.apply {
+                color = value
             }
             invalidate()
         }
@@ -103,11 +104,11 @@ class TimeSegmentView @JvmOverloads constructor(
 
         context.withStyledAttributes(attrs, R.styleable.TimeSegmentView) {
             cornersRadius = getDimension(R.styleable.TimeSegmentView_corners_radius, 0f)
-            strokeWidth = getDimension(R.styleable.TimeSegmentView_stroke_width, 1f)
             background_color = getColor(R.styleable.TimeSegmentView_background_color, Color.WHITE)
             textSize = getDimension(R.styleable.TimeSegmentView_text_size, 12f)
             drawLines = getBoolean(R.styleable.TimeSegmentView_draw_lines, false)
             lineColor = getColor(R.styleable.TimeSegmentView_line_color, Color.GRAY)
+            textColor = getColor(R.styleable.TimeSegmentView_text_color, Color.BLACK)
 
             segmentCornersRadius =
                 getDimension(R.styleable.TimeSegmentView_segment_corners_radius, 0.0f)

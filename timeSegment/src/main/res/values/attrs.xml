@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="TimeSegmentView">
-        <attr name="stroke_width" format="dimension" />
         <attr name="corners_radius" format="dimension"/>
         <attr name="segment_corners_radius" format="dimension"/>
         <attr name="background_color" format="color"/>
         <attr name="text_size" format="dimension"/>
         <attr name="draw_lines" format="boolean"/>
         <attr name="line_color" format="color" />
+        <attr name="text_color" format="color"/>
 
     </declare-styleable>
 </resources>
