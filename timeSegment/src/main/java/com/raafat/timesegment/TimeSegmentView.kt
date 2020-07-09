@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.core.content.withStyledAttributes
 import java.text.SimpleDateFormat
 import java.util.*
@@ -76,7 +77,7 @@ class TimeSegmentView @JvmOverloads constructor(
         }
 
 
-    var labels: ArrayList<Long> = arrayListOf(
+    private var labels: ArrayList<Long> = arrayListOf(
         sdf.parse("2 AM")?.time?:0,
         sdf.parse("4 AM")?.time?:0,
         sdf.parse("6 AM")?.time?:0,
@@ -94,6 +95,10 @@ class TimeSegmentView @JvmOverloads constructor(
     fun addItem(timeItem: TimeItem) {
         times.add(timeItem)
         invalidate()
+    }
+
+    fun addItem(start:Long, end:Long,@ColorInt color:Int){
+        addItem(TimeItem(start,end,color))
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
