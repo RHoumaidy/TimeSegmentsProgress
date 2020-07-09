@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:background_color="#C6C6C6"
-        app:corners_radius="5dp"/>
+        app:corners_radius="5dp"
+        app:segment_corners_radius="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

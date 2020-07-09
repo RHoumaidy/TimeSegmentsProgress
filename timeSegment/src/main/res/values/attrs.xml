@@ -4,6 +4,7 @@
         <attr name="stroke_color" format="color" />
         <attr name="stroke_width" format="dimension" />
         <attr name="corners_radius" format="dimension"/>
+        <attr name="segment_corners_radius" format="dimension"/>
         <attr name="background_color" format="color"/>
     </declare-styleable>
 </resources>
