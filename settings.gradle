@@ -1,0 +1,3 @@
+include ':timeSegment'
+include ':app'
+rootProject.name = "TimeSegmentsProgress"
