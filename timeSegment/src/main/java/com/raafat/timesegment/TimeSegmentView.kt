@@ -29,7 +29,11 @@ class TimeSegmentView @JvmOverloads constructor(
         color = Color.WHITE
         style = Paint.Style.FILL
         textAlign = Paint.Align.CENTER
-        textSize *= 100
+    }
+    private var linePaint = Paint().apply {
+        isAntiAlias = true
+        color = Color.BLACK
+        style = Paint.Style.FILL
     }
     private var textPaint = Paint().apply {
         isAntiAlias = true
@@ -49,7 +53,7 @@ class TimeSegmentView @JvmOverloads constructor(
         }
     private var segmentCornersRadius = 0.0f
         set(value) {
-            field = min(value,cornersRadius)
+            field = min(value, cornersRadius)
             invalidate()
         }
     private var strokeWidth = 1.0f
@@ -60,6 +64,13 @@ class TimeSegmentView @JvmOverloads constructor(
             }
             invalidate()
         }
+    private var textSize = 12f
+        set(value) {
+            field = value
+            setTextSizeForWidth(textPaint, value, "M")
+            invalidate()
+
+        }
     private var background_color: Int = 0
         set(value) {
             field = value
@@ -69,18 +80,35 @@ class TimeSegmentView @JvmOverloads constructor(
             invalidate()
         }
 
+    private var lineColor: Int = 0
+        set(value) {
+            field = value
+            linePaint.apply {
+                color = value
+            }
+            invalidate()
+        }
+
+    private var drawLines = true
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     private var textHeight = 0
-
-
 
     init {
         sdf.timeZone = TimeZone.getTimeZone("GMT")
         sdf2.timeZone = TimeZone.getTimeZone("GMT")
 
         context.withStyledAttributes(attrs, R.styleable.TimeSegmentView) {
-            cornersRadius = getDimension(R.styleable.TimeSegmentView_corners_radius, 0.0f)
+            cornersRadius = getDimension(R.styleable.TimeSegmentView_corners_radius, 0f)
             strokeWidth = getDimension(R.styleable.TimeSegmentView_stroke_width, 1f)
             background_color = getColor(R.styleable.TimeSegmentView_background_color, Color.WHITE)
+            textSize = getDimension(R.styleable.TimeSegmentView_text_size, 12f)
+            drawLines = getBoolean(R.styleable.TimeSegmentView_draw_lines, false)
+            lineColor = getColor(R.styleable.TimeSegmentView_line_color, Color.GRAY)
+
             segmentCornersRadius =
                 getDimension(R.styleable.TimeSegmentView_segment_corners_radius, 0.0f)
         }
@@ -98,7 +126,6 @@ class TimeSegmentView @JvmOverloads constructor(
             Path.Direction.CW
         )
         path.close()
-
     }
 
 
@@ -160,7 +187,6 @@ class TimeSegmentView @JvmOverloads constructor(
                 )
             }
             clipPath(path)
-
             drawRect(
                 0f,
                 0f,
@@ -180,6 +206,21 @@ class TimeSegmentView @JvmOverloads constructor(
                     item.getPaint()
                 )
             }
+
+            if (drawLines)
+                for (label in labels) {
+                    val text = sdf.format(label)
+                    textPaint.getTextBounds(text, 0, text.length, bounds)
+
+                    drawLine(
+                        label.toFloat() / (24 * 60 * 60 * 1000) * width,
+                        0f,
+                        label.toFloat() / (24 * 60 * 60 * 1000) * width,
+                        height.toFloat() - textHeight,
+                        linePaint
+                    )
+                }
+
 
         }
         super.onDraw(canvas)

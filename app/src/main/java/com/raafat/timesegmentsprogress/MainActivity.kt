@@ -17,8 +17,8 @@ class MainActivity : AppCompatActivity() {
         sdf.timeZone = TimeZone.getTimeZone("GMT")
         timeSegmentView.times = arrayListOf(
             TimeItem(
-                sdf.parse("01:33 AM")?.time ?: 0,
-                sdf.parse("04:05 AM")?.time ?: 0,
+                sdf.parse("02:0 AM")?.time ?: 0,
+                sdf.parse("05:05 AM")?.time ?: 0,
                 Color.RED
             ),
             TimeItem(
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 Color.YELLOW
             ),
             TimeItem(
-                sdf.parse("02:05 PM")?.time ?: 0,
+                sdf.parse("02:00 PM")?.time ?: 0,
                 sdf.parse("09:55 PM")?.time ?: 0,
                 Color.BLUE
             )
