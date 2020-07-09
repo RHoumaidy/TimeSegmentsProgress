@@ -154,6 +154,20 @@ class TimeSegmentView @JvmOverloads constructor(
         addItem(TimeItem(start, end, color))
     }
 
+    fun addItem(
+        start: String,
+        end: String,
+        @ColorInt color: Int,
+        simpleDateFormat: SimpleDateFormat
+    ) {
+        simpleDateFormat.timeZone = TimeZone.getTimeZone("GMT")
+        addItem(
+            simpleDateFormat.parse(start)?.time ?: 0,
+            simpleDateFormat.parse(end)?.time ?: 0,
+            color
+        )
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         textPaint.getTextBounds("12 AM", 0, "12 AM".length, bounds)
