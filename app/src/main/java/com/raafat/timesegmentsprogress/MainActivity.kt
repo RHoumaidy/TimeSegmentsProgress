@@ -17,22 +17,8 @@ class MainActivity : AppCompatActivity() {
         val timeSegmentView = findViewById<TimeSegmentView>(R.id.timeSegments)
         sdf.timeZone = TimeZone.getTimeZone("GMT")
 
-        timeSegmentView.times = arrayListOf(
-            TimeItem(
-                sdf.parse("02:0 AM")?.time ?: 0,
-                sdf.parse("05:05 AM")?.time ?: 0,
-                ContextCompat.getColor(this,R.color.colorPrimary)
-            ),
-            TimeItem(
-                sdf.parse("01:33 PM")?.time ?: 0,
-                sdf.parse("02:05 PM")?.time ?: 0,
-                Color.YELLOW
-            ),
-            TimeItem(
-                sdf.parse("02:00 PM")?.time ?: 0,
-                sdf.parse("09:55 PM")?.time ?: 0,
-                Color.BLUE
-            )
-        )
+        timeSegmentView.addTimeSheet("12h:04m",Color.BLACK)
+        timeSegmentView.addTimeSheet("02h:34m",Color.RED)
+        timeSegmentView.addTimeSheet("<1m",Color.BLUE)
     }
 }

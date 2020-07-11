@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.withStyledAttributes
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -20,6 +21,7 @@ class TimeSegmentView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     private val sdf = SimpleDateFormat("h a", Locale.US)
     private val sdf2 = SimpleDateFormat("hh:mm a", Locale.US)
+    private val sdf3 = SimpleDateFormat("H 'h'", Locale.US)
 
     private var path = Path()
     private val bounds = Rect()
@@ -97,10 +99,12 @@ class TimeSegmentView @JvmOverloads constructor(
         }
 
     private var textHeight = 0
+    private var type: Int = 0
 
     init {
         sdf.timeZone = TimeZone.getTimeZone("GMT")
         sdf2.timeZone = TimeZone.getTimeZone("GMT")
+        sdf3.timeZone = TimeZone.getTimeZone("GMT")
 
         context.withStyledAttributes(attrs, R.styleable.TimeSegmentView) {
             cornersRadius = getDimension(R.styleable.TimeSegmentView_corners_radius, 0f)
@@ -109,7 +113,7 @@ class TimeSegmentView @JvmOverloads constructor(
             drawLines = getBoolean(R.styleable.TimeSegmentView_draw_lines, false)
             lineColor = getColor(R.styleable.TimeSegmentView_line_color, Color.GRAY)
             textColor = getColor(R.styleable.TimeSegmentView_text_color, Color.BLACK)
-
+            type = getInt(R.styleable.TimeSegmentView_type, 0)
             segmentCornersRadius =
                 getDimension(R.styleable.TimeSegmentView_segment_corners_radius, 0.0f)
         }
@@ -145,32 +149,45 @@ class TimeSegmentView @JvmOverloads constructor(
 
     )
 
-    fun addItem(timeItem: TimeItem) {
+    fun addPeriod(timeItem: TimeItem) {
         times.add(timeItem)
         invalidate()
     }
 
-    fun addItem(start: Long, end: Long, @ColorInt color: Int) {
-        addItem(TimeItem(start, end, color))
+    fun addPeriod(start: Long, end: Long, @ColorInt color: Int) {
+        addPeriod(TimeItem(start, end, color))
     }
 
-    fun clear(){
+    fun clear() {
         times.clear()
         invalidate()
     }
 
-    fun addItem(
+    fun addPeriod(
         start: String,
         end: String,
         @ColorInt color: Int,
         simpleDateFormat: SimpleDateFormat
     ) {
         simpleDateFormat.timeZone = TimeZone.getTimeZone("GMT")
-        addItem(
+        addPeriod(
             simpleDateFormat.parse(start)?.time ?: 0,
             simpleDateFormat.parse(end)?.time ?: 0,
             color
         )
+    }
+
+    fun addTimeSheet(time: String, @ColorInt color: Int) {
+        val sdf4 = SimpleDateFormat("HH'h':mm'm'", Locale.US)
+        sdf4.timeZone = TimeZone.getTimeZone("GMT")
+        var startTime = 0L
+        try {
+           startTime =  sdf4.parse(time)?.time?:0
+        }catch (e:ParseException){
+            e.printStackTrace()
+        }
+
+        addPeriod(TimeItem(endTime = startTime, color = color))
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -197,7 +214,7 @@ class TimeSegmentView @JvmOverloads constructor(
         canvas?.apply {
 
             for (label in labels) {
-                val text = sdf.format(label)
+                val text = if (type == 0) sdf.format(label) else sdf3.format(label)
                 textPaint.getTextBounds(text, 0, text.length, bounds)
                 drawText(
                     text,
@@ -214,17 +231,19 @@ class TimeSegmentView @JvmOverloads constructor(
                 height.toFloat() - textHeight,
                 backgroundPaint
             )
-
+            var startX = 0f
             for (item in times) {
                 drawRoundRect(
-                    item.getStartX() * width,
+                    if(type == 0)item.getStartX() * width else startX,
                     0f,
-                    item.getEndX() * width,
+                    item.getEndX() * width + startX,
                     height.toFloat() - textHeight,
                     segmentCornersRadius,
                     segmentCornersRadius,
                     item.getPaint()
                 )
+                if(type == 1)
+                startX += item.getEndX() * width
             }
 
             if (drawLines)

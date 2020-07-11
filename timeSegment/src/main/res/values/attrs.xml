@@ -8,6 +8,10 @@
         <attr name="draw_lines" format="boolean"/>
         <attr name="line_color" format="color" />
         <attr name="text_color" format="color"/>
+        <attr name="type" format="enum">
+            <enum name="exact" value="0"/>
+            <enum name="elapsed" value="1"/>
+        </attr>
 
     </declare-styleable>
 </resources>

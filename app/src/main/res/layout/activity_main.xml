@@ -20,6 +20,7 @@
         app:draw_lines="true"
         app:text_color="#AD0000"
         app:line_color="#70A2A2A2"
+        app:type="elapsed"
         app:segment_corners_radius="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
